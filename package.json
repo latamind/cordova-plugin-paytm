@@ -1,0 +1,24 @@
+{
+    "version": "0.0.1",
+    "name": "com.latamind.paytm",
+    "cordova_name": "Paytm",
+    "description": "\n      This Plugin allows you to integrate Paytm application into a cordova app.",
+    "license": "MIT",
+    "repo": "https://github.com/latamind/cordova-plugin-paytm.git",
+    "issue": "https://github.com/latamind/cordova-plugin-paytm/issues",
+    "keywords": [
+        "Cordova",
+        "Paytm",
+        "Payment",
+        "Gateway",
+        "Mobile"
+    ],
+    "platforms": [
+        "ios",
+        "android"
+    ],
+    "engines": [{
+        "name": "cordova",
+        "version": ">=3.0.0"
+    }]
+}

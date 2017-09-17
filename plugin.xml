@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        id="com.latamind.paytm"
+        version="0.0.1">
+
+  <name>Paytm</name>
+
+  <description>
+    This Plugin allows you to integrate Paytm application into a cordova app.
+  </description>
+
+  <author>LataMind</author>
+
+  <license>MIT</license>
+
+  <keywords>Cordova, Paytm, Payment, Gateway, Mobile</keywords>
+
+  <repo>https://github.com/latamind/cordova-plugin-paytm.git</repo>
+
+  <issue>https://github.com/latamind/cordova-plugin-paytm/issues</issue>
+
+  <engines>
+    <engine name="cordova" version=">=3.0.0"/>
+  </engines>
+
+  <js-module src="www/paytm.js" name="paytm">
+    <clobbers target="window.cordova.paytm" />
+  </js-module>
+
+  <!-- ios -->
+  <platform name="ios">
+
+    <config-file target="config.xml" parent="/*">
+      <feature name="Paytm">
+        <param name="ios-package" value="PaytmCordova"/>
+        <plugin name="PaytmCordova" value="PaytmCordova"/>
+      </feature>
+    </config-file>
+    <header-file src="src/ios/Paytm/Headers/PaymentsSDK.h"/>
+    <header-file src="src/ios/Paytm/Headers/PGMerchantConfiguration.h"/>
+    <header-file src="src/ios/Paytm/Headers/PGOrder.h"/>
+    <header-file src="src/ios/Paytm/Headers/PGServerEnvironment.h"/>
+    <header-file src="src/ios/Paytm/Headers/PGTransactionViewController.h"/>
+    <header-file src="src/ios/PaytmCordova.h"/>
+    <source-file src="src/ios/PaytmCordova.m"/>
+
+    <!-- Paytm framework -->
+    <source-file src="src/ios/Paytm/libPaymentsSDK.a" framework="true"/>
+  </platform>
+
+  <!-- android -->
+  <platform name="android">
+
+    <config-file target="res/xml/config.xml" parent="/*">
+      <feature name="Paytm">
+        <param name="android-package" value="com.latamind.paytm.Paytm" />
+      </feature>
+    </config-file>
+
+    <config-file target="AndroidManifest.xml" parent="application">
+        <uses-permission android:name="android.permission.INTERNET"/>
+        <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+        <activity android:name="com.paytm.pgsdk.PaytmPGActivity" android:screenOrientation="portrait" android:configChanges="keyboardHidden|orientation|keyboard"/>
+    </config-file>
+    
+    <source-file src="src/android/pgsdk.jar" target-dir="libs" />
+    <source-file src="src/android/com/paytm/cordova/Paytm.java" target-dir="src/com/paytm/cordova"/>
+  </platform>
+</plugin>
