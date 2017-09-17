@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
         xmlns:android="http://schemas.android.com/apk/res/android"
-        id="com.latamind.paytm"
+        id="cordova-plugin-paytm"
         version="0.0.1">
 
   <name>Paytm</name>
@@ -21,7 +21,7 @@
   <issue>https://github.com/latamind/cordova-plugin-paytm/issues</issue>
 
   <engines>
-    <engine name="cordova" version=">=3.0.0"/>
+    <engine name="cordova" version=">=5.0.0"/>
   </engines>
 
   <js-module src="www/paytm.js" name="paytm">
