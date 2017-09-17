@@ -50,6 +50,7 @@ public class Paytm extends CordovaPlugin {
                             final String is_prod,
                             final CallbackContext callbackContext){
 
+        Map<String, String> paramMap = new HashMap<String, String>();
         paramMap.put("MID", merchant_id);
         paramMap.put("CUST_ID", cust_id);
         paramMap.put("CHANNEL_ID", channel_id);
