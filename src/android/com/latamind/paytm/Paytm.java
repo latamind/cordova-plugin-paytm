@@ -33,8 +33,8 @@ public class Paytm extends CordovaPlugin {
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext)
             throws JSONException {
         if (action.equals("startPayment")) {
-            //orderid, cust_id, email, phone, txn_amt
-            startPayment(args.getString(0), args.getString(1), args.getString(2), args.getString(3), args.getString(4), args.getString(5), args.getString(6), args.getString(7), args.getString(8), args.getString(9), callbackContext);
+            //merchant_id, cust_id, channel_id, industry_type_id, website, order_id, email, phone, txn_amt, callback_url, checksum, is_prod
+            startPayment(args.getString(0), args.getString(1), args.getString(2), args.getString(3), args.getString(4), args.getString(5), args.getString(6), args.getString(7), args.getString(8), args.getString(9), args.getString(10), args.getString(11), callbackContext);
             return true;
         }
         return false;
@@ -47,6 +47,8 @@ public class Paytm extends CordovaPlugin {
                             final String industry_type_id,
                             final String website,
                             final String order_id,
+                            final String email,
+                            final String phone,
                             final String txn_amt,
                             final String callback_url,
                             final String checksum,
@@ -60,6 +62,8 @@ public class Paytm extends CordovaPlugin {
         paramMap.put("INDUSTRY_TYPE_ID", industry_type_id);
         paramMap.put("WEBSITE", website);
         paramMap.put("ORDER_ID", order_id);
+        paramMap.put("EMAIL", email);
+        paramMap.put("MOBILE_NO", phone);
         paramMap.put("TXN_AMOUNT", txn_amt);
 		paramMap.put("CALLBACK_URL" , callback_url);
         paramMap.put("CHECKSUMHASH" , checksum);
