@@ -9,5 +9,5 @@ Usage
 =====
 
 ```
-window.plugins.paytm.startPayment(txn_id, customer_id, email, phone, amount, successCallback, failureCallback);
+window.cordova.paytm.startPayment(merchant_id, customer_id, channel_id, industry_type_id, website, order_id, email, mobile_no, amount, callback_url, checksum, isProd, successCallback, failureCallback);
 ```
