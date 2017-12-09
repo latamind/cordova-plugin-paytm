@@ -112,7 +112,7 @@ public class Paytm extends CordovaPlugin {
 
         PaytmOrder order = new PaytmOrder(paramMap);
         
-        if(is_prod.equals("true")){
+        if(is_prod.equals("1")){
             this.paytm_service = PaytmPGService.getProductionService();
         }else{
             this.paytm_service = PaytmPGService.getStagingService();
