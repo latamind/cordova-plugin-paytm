@@ -1,7 +1,9 @@
+
+#import <UIKit/UIKit.h>
 #import "PaymentsSDK.h"
 #import <Cordova/CDV.h>
 
-@interface PayTMCordova : CDVPlugin <PGTransactionDelegate>
+@interface PaytmCordova : CDVPlugin <PGTransactionDelegate>
 
 - (void)startPayment:(CDVInvokedUrlCommand*)command;
 

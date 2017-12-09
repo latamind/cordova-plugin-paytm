@@ -1,7 +1,7 @@
-#import "PayTMCordova.h"
+#import "PaytmCordova.h"
 #import <Cordova/CDV.h>
 
-@implementation PayTMCordova{
+@implementation PaytmCordova{
     NSString* callbackId;
     PGTransactionViewController* txnController;
 }
@@ -9,41 +9,55 @@
 - (void)startPayment:(CDVInvokedUrlCommand *)command {
     
     callbackId = command.callbackId;
-//    orderId, customerId, email, phone, amount,
-    NSString *orderId  = [command.arguments objectAtIndex:0];
-    NSString *customerId = [command.arguments objectAtIndex:1];
-    NSString *email = [command.arguments objectAtIndex:2];
-    NSString *phone = [command.arguments objectAtIndex:3];
-    NSString *amount = [command.arguments objectAtIndex:4];
-    
-    NSBundle* mainBundle;
-    mainBundle = [NSBundle mainBundle];
-    
-    NSString* paytm_generate_url = [mainBundle objectForInfoDictionaryKey:@"PayTMGenerateChecksumURL"];
-    NSString* paytm_validate_url = [mainBundle objectForInfoDictionaryKey:@"PayTMVerifyChecksumURL"];
-    NSString* paytm_merchant_id = [mainBundle objectForInfoDictionaryKey:@"PayTMMerchantID"];
-    NSString* paytm_ind_type_id = [mainBundle objectForInfoDictionaryKey:@"PayTMIndustryTypeID"];
-    NSString* paytm_website = [mainBundle objectForInfoDictionaryKey:@"PayTMWebsite"];
-    
+
+    NSString *merchant_id  = [command.arguments objectAtIndex:0];
+    NSString *cust_id = [command.arguments objectAtIndex:1];
+    NSString *channel_id = [command.arguments objectAtIndex:2];
+    NSString *industry_type_id = [command.arguments objectAtIndex:3];
+    NSString *website = [command.arguments objectAtIndex:4];
+    NSString *order_id  = [command.arguments objectAtIndex:5];
+    NSString *email = [command.arguments objectAtIndex:6];
+    NSString *phone = [command.arguments objectAtIndex:7];
+    NSString *txn_amt = [command.arguments objectAtIndex:8];
+    NSString *callback_url = [command.arguments objectAtIndex:9];
+    NSString *checksum = [command.arguments objectAtIndex:10];
+    NSString *is_prod = [command.arguments objectAtIndex:11];
+
     PGMerchantConfiguration* merchant = [PGMerchantConfiguration defaultConfiguration];
-    merchant.merchantID = paytm_merchant_id;
-    merchant.industryID = paytm_ind_type_id;
-    merchant.website = paytm_website;
-    merchant.channelID = @"WAP";
+    merchant.merchantID = merchant_id;
+    merchant.industryID = industry_type_id;
+    merchant.website = website;
+    merchant.channelID = channel_id;
     
-    merchant.checksumGenerationURL = paytm_generate_url;
-    merchant.checksumValidationURL = paytm_validate_url;
+    //Step 2: Create the order with whatever params you want to add. But make sure that you include the merchant mandatory params
+    NSMutableDictionary *orderDict = [NSMutableDictionary new];
+    //Merchant configuration in the order object
+    orderDict[@"MID"] = merchant_id;
+    orderDict[@"ORDER_ID"] = order_id;
+    orderDict[@"CUST_ID"] = cust_id;
+    orderDict[@"INDUSTRY_TYPE_ID"] = industry_type_id;
+    orderDict[@"CHANNEL_ID"] = channel_id;
+    orderDict[@"TXN_AMOUNT"] = txn_amt;
+    orderDict[@"WEBSITE"] = website;
+    orderDict[@"CALLBACK_URL"] = callback_url;
+    orderDict[@"CHECKSUMHASH"] = checksum;
     
-    PGOrder* order =
-    [PGOrder orderForOrderID:orderId customerID:customerId amount:amount customerMail:email customerMobile:phone];
+    PGOrder *order = [PGOrder orderWithParams:orderDict];
     
     txnController = [[PGTransactionViewController alloc] initTransactionForOrder:order];
-    txnController.serverType = eServerTypeProduction;
+
+    if ([is_prod isEqualToString:@"true"])
+    {
+        txnController.serverType = eServerTypeProduction;
+    }
+    else
+    {
+        txnController.serverType = eServerTypeStaging;
+    }
     txnController.merchant = merchant;
     txnController.delegate = self;
     txnController.loggingEnabled = true;
     UIViewController *rootVC = [[[[UIApplication sharedApplication] delegate] window] rootViewController];
-//    [rootVC.navigationController pushViewController:txnController animated:true];
     [rootVC presentViewController:txnController animated:YES completion:nil];
 }
 
@@ -73,12 +87,5 @@
     [self.commandDelegate sendPluginResult:result callbackId:callbackId];
     [txnController dismissViewControllerAnimated:YES completion:nil];
 }
-
-//Called when CHeckSum HASH Generation completes either by PG_Server Or Merchant server.
-// - (void)didFinishCASTransaction:(PGTransactionViewController *)controller response:(NSDictionary *)response{
-//     CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:response];
-//     [self.commandDelegate sendPluginResult:result callbackId:callbackId];
-//     [txnController dismissViewControllerAnimated:YES completion:nil];
-// }
 
 @end

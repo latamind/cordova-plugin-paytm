@@ -37,11 +37,11 @@
         <plugin name="PaytmCordova" value="PaytmCordova"/>
       </feature>
     </config-file>
-    <header-file src="src/ios/Paytm/Headers/PaymentsSDK.h"/>
-    <header-file src="src/ios/Paytm/Headers/PGMerchantConfiguration.h"/>
-    <header-file src="src/ios/Paytm/Headers/PGOrder.h"/>
-    <header-file src="src/ios/Paytm/Headers/PGServerEnvironment.h"/>
-    <header-file src="src/ios/Paytm/Headers/PGTransactionViewController.h"/>
+    <header-file src="src/ios/Paytm/include/PaymentsSDK.h"/>
+    <header-file src="src/ios/Paytm/include/PGMerchantConfiguration.h"/>
+    <header-file src="src/ios/Paytm/include/PGOrder.h"/>
+    <header-file src="src/ios/Paytm/include/PGServerEnvironment.h"/>
+    <header-file src="src/ios/Paytm/include/PGTransactionViewController.h"/>
     <header-file src="src/ios/PaytmCordova.h"/>
     <source-file src="src/ios/PaytmCordova.m"/>
 
