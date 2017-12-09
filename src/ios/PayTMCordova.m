@@ -21,7 +21,7 @@
     NSString *txn_amt = [command.arguments objectAtIndex:8];
     NSString *callback_url = [command.arguments objectAtIndex:9];
     NSString *checksum = [command.arguments objectAtIndex:10];
-    NSString *is_prod = [command.arguments objectAtIndex:11];
+    NSNumber *is_prod = [command.arguments objectAtIndex:11];
 
     PGMerchantConfiguration* merchant = [PGMerchantConfiguration defaultConfiguration];
     merchant.merchantID = merchant_id;
@@ -31,22 +31,27 @@
     
     //Step 2: Create the order with whatever params you want to add. But make sure that you include the merchant mandatory params
     NSMutableDictionary *orderDict = [NSMutableDictionary new];
+    
     //Merchant configuration in the order object
     orderDict[@"MID"] = merchant_id;
-    orderDict[@"ORDER_ID"] = order_id;
     orderDict[@"CUST_ID"] = cust_id;
-    orderDict[@"INDUSTRY_TYPE_ID"] = industry_type_id;
     orderDict[@"CHANNEL_ID"] = channel_id;
-    orderDict[@"TXN_AMOUNT"] = txn_amt;
+    orderDict[@"INDUSTRY_TYPE_ID"] = industry_type_id;
     orderDict[@"WEBSITE"] = website;
-    orderDict[@"CALLBACK_URL"] = callback_url;
-    orderDict[@"CHECKSUMHASH"] = checksum;
+    orderDict[@"ORDER_ID"] = order_id;
+    orderDict[@"EMAIL"] = email;
+    orderDict[@"MOBILE_NO"] = phone;
+    orderDict[@"TXN_AMOUNT"] = txn_amt;
+    orderDict[@"CALLBACK_URL" ] = callback_url;
+    orderDict[@"CHECKSUMHASH" ] = checksum;
     
     PGOrder *order = [PGOrder orderWithParams:orderDict];
     
     txnController = [[PGTransactionViewController alloc] initTransactionForOrder:order];
 
-    if ([is_prod isEqualToString:@"true"])
+    //txnController.serverType = eServerTypeStaging;
+    
+    if ([is_prod isEqualToNumber:@1])
     {
         txnController.serverType = eServerTypeProduction;
     }
@@ -54,6 +59,7 @@
     {
         txnController.serverType = eServerTypeStaging;
     }
+    
     txnController.merchant = merchant;
     txnController.delegate = self;
     txnController.loggingEnabled = true;
@@ -61,12 +67,21 @@
     [rootVC presentViewController:txnController animated:YES completion:nil];
 }
 
-//Called when a transaction has completed. response dictionary will be having details about Transaction.
+/*//Called when a transaction has completed. response dictionary will be having details about Transaction.
 - (void)didSucceedTransaction:(PGTransactionViewController *)controller
                      response:(NSDictionary *)response{
     CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:response];
     [self.commandDelegate sendPluginResult:result callbackId:callbackId];
     [txnController dismissViewControllerAnimated:YES completion:nil];
+}*/
+
+//Called when a transaction has completed. response dictionary will be having details about Transaction.
+- (void)didFinishedResponse:(PGTransactionViewController *)controller response:(NSString *)responseString {
+    DEBUGLOG(@"ViewController::didFinishedResponse:response = %@", responseString);
+    NSDictionary *response = [NSJSONSerialization JSONObjectWithData:[responseString dataUsingEncoding:NSUTF8StringEncoding] options:0 error:nil];
+    CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:response];
+    [self.commandDelegate sendPluginResult:result callbackId:callbackId];
+    [controller dismissViewControllerAnimated:YES completion:nil];
 }
 
 //Called when a transaction is failed with any reason. response dictionary will be having details about failed Transaction.
