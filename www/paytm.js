@@ -3,6 +3,6 @@
       cordova.exec(successCallback,
         failureCallback,
         "Paytm",
-        "startPayment", [merchantId, customerId, channelId, industryTypeId, website, orderId, email, phone, amount, callbackUrl, checksum, isProd]);
+        "startPayment", [merchantId, customerId, channelId, industryTypeId, website, orderId, email, phone, amount, callbackUrl, checksum, isProd ? 1 : 0]);
     }
   };

@@ -192,7 +192,7 @@ public class Paytm extends CordovaPlugin {
         });
     }
 
-    private String getJson(final Bundle bundle) {
+    private JSONObject getJson(final Bundle bundle) {
         if (bundle == null) return null;
         JSONObject jsonObject = new JSONObject();
 
@@ -204,7 +204,7 @@ public class Paytm extends CordovaPlugin {
                 e.printStackTrace();
             }
         }
-        return jsonObject.toString();
+        return jsonObject;//.toString();
     }
 
     public static Object wrap(Object o) {
